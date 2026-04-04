@@ -68,10 +68,28 @@ WHERE category = 'Fitness' AND is_available = TRUE;
 
 --View 2: Low Stock Products
 
+
+--addd product procedure
+
 CREATE VIEW low_stock_products AS
 SELECT name, category, stock_quantity
 FROM products
 WHERE stock_quantity < 30;
 
+CREATE PROCEDURE add_product(
+    p_name VARCHAR,
+    p_sku CHAR(8),
+    p_price NUMERIC,
+    p_qty INT,
+    p_category TEXT
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    INSERT INTO products(name, sku_code, price, stock_quantity, category)
+    VALUES (p_name, p_sku, p_price, p_qty, p_category);
 
+    RAISE NOTICE 'Product added successfully!';
+END;
+$$;
 
